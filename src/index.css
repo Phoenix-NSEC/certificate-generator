@@ -1,0 +1,105 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  /* font-family: T; */
+}
+
+.App-container{
+  padding: 0 1rem;
+}
+
+.App-container .App {  
+  display: flex; 
+  
+  gap: 5rem;
+}
+.App-container .App .Meta {  
+  padding: 15px;
+  width: 25vw;
+  border: 2px solid red;
+}
+.App-container .App .Meta input {
+  font-family: inherit;
+  padding: 5px;
+  width: 100%;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.25);
+  border: 2px solid rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+}
+.App-container .App .Meta button {
+  padding: 10px 15px;
+  border: 2px solid #87ceeb;
+  background-color: #33f3fb;
+  font-family: inherit;
+  margin: 20px 0;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.App-container .App #downloadWrapper {
+  padding: 15px;
+  /* width: 65vw; */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.6rem;
+  border: 2px solid black;
+}
+.App-container .App #certificateWrapper {
+  box-shadow: 0 0 5px #000;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+.App-container .App #certificateWrapper img {
+  display: block;
+}
+.App-container .App #certificateWrapper p {
+  
+  margin: 0;
+  position: absolute;
+  left: 90px;
+  top: 300px;
+  font-size: 40pt;
+}
+
+input[type='file']::file-selector-button {
+  margin-right: 20px;
+  border: none;
+  background: #084cdf;
+  padding: 10px 20px;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+input[type='file']::file-selector-button:hover {
+  background: #0d45a5;
+}
+.delete-btn {
+  margin-right: 20px;
+  outline: none;
+  border: none;
+  background: #df0825;
+  padding: 10px 20px;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+
+
+.input-title{
+  display: flex;
+  align-items: center;  
+  gap: 2rem;
+}
+.check-type{
+  width: 1rem;
+  height: 1rem;
+}
+
+
