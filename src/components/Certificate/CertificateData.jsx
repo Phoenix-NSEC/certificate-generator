@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Certificate from './Certificate';
 const CertificateData = () => {
-  console.log('rendrs....');
+  const[email, setEmail] = useState('');
   const [certCord, setCertCord] = useState({
     name: {
       value: '',
@@ -37,7 +37,7 @@ const CertificateData = () => {
     },
   });
 
-  console.log(certCord.name.xAxis, certCord.name.yAxis);
+  
 
   const [activeInputEle, setActiveInputEle] = useState({
     name: false,
@@ -377,10 +377,12 @@ const CertificateData = () => {
             </label>
           </div>
           <input
-            type='text'
+            type='email'
             className='form-control'
             id='exampleFormControlInput1'
             placeholder='Email id'
+            value={email}
+            onChange={(e)=> setEmail(e.target.value)}
           />
         </div>
       </div>
@@ -390,6 +392,7 @@ const CertificateData = () => {
         setActiveInput={setActiveInputEle}
         data={certCord}
         setData={setCertCord}
+        email={email}
       />
     </div>
   );

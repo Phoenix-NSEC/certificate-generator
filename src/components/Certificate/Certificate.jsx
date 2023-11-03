@@ -1,14 +1,37 @@
 import { useState, useEffect } from 'react';
-const Certificate = ({ activeInput, setActiveInput, data, setData }) => {
+import emailjs from '@emailjs/browser';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { sendEmail } from '../../utils/smtp';
+const Certificate = ({ activeInput, setActiveInput, data, setData, email }) => {
   const [File, setFile] = useState('');
   const [width, setCanvasWidth] = useState('');
   const [height, setCanvasHeight] = useState('');
   const [imgSrc, setImgSrc] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [choice, setChoice] = useState({
+    download: false,
+    send: false,
+  });
 
+  const handleSend = () => {
+    setChoice({
+      download: false,
+      send: true,
+    });
+  };
   const handleDownload = () => {
-    // const canvas = document.getElementById('certificate');
-    // const imageDataURL = canvas.toDataURL('image/png'); // Convert canvas content to data URL
+    console.log('download');
+    setChoice({
+      download: true,
+      send: false,
+    });
+  };
+  useEffect(() => {
+    handleDownloadOrSend();
+  }, [choice]);
 
+  const handleDownloadOrSend = () => {
     const canvas = document.getElementById('certificate');
     const ctx = canvas.getContext('2d');
 
@@ -25,7 +48,7 @@ const Certificate = ({ activeInput, setActiveInput, data, setData }) => {
     const img = new Image();
     img.src = imgSrc; // Replace with the URL of the image you want to load
 
-    img.onload = function () {
+    img.onload = async function () {
       tempCtx.drawImage(img, 0, 0, imageWidth, imageHeight);
 
       tempCtx.font = `${data.name.fontSize}px ${data.name.fontName}`;
@@ -64,13 +87,45 @@ const Certificate = ({ activeInput, setActiveInput, data, setData }) => {
       );
       // Convert the visible image portion to a data URL
       const imageDataURL = tempCanvas.toDataURL('image/png');
-      const a = document.createElement('a');
-      a.href = imageDataURL;
-      a.download = 'downloaded_image.png'; // Set the file name for the downloaded image
-      a.style.display = 'none';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+
+      if (choice.send) {
+        try {
+          await sendEmail(data.name.value, email, imageDataURL);
+          toast('Email sent successfully', {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          });
+        } catch (err) {
+          console.log(err);
+          toast.error('Failed to sent email', {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          });
+        }
+      }
+
+      //download the image
+      if (choice.download) {
+        const a = document.createElement('a');
+        a.href = imageDataURL;
+        a.download = `${data.name.value}.png`; // Set the file name for the downloaded image
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
     };
   };
 
@@ -116,8 +171,13 @@ const Certificate = ({ activeInput, setActiveInput, data, setData }) => {
         },
       });
     }
-    console.log('dragged..');
   }
+
+  const deleteCanvas = () => {
+    const canvas = document.getElementById('certificate');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  };
 
   const stopDrag = () => {
     setActiveInput({
@@ -210,6 +270,7 @@ const Certificate = ({ activeInput, setActiveInput, data, setData }) => {
 
   return (
     <div id='downloadWrapper'>
+      <ToastContainer />
       <div id='certificateWrapper'>
         <canvas
           id='certificate'
@@ -226,8 +287,18 @@ const Certificate = ({ activeInput, setActiveInput, data, setData }) => {
           id='certificate-uploader'
         />
         {File && (
-          <button onClick={handleDownload} className='delete-btn'>
+          <button onClick={deleteCanvas} className='delete-btn'>
+            Delete
+          </button>
+        )}
+        {File && (
+          <button onClick={handleDownload} className='download-btn'>
             Download
+          </button>
+        )}
+        {File && (
+          <button onClick={handleSend} className='send-btn'>
+            Send
           </button>
         )}
       </div>
