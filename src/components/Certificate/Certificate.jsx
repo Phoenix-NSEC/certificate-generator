@@ -177,6 +177,7 @@ const Certificate = ({ activeInput, setActiveInput, data, setData, email }) => {
     const canvas = document.getElementById('certificate');
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    setFile('')
   };
 
   const stopDrag = () => {
