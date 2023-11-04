@@ -18,7 +18,7 @@
 .App-container .App .Meta {  
   padding: 15px;
   width: 25vw;
-  border: 2px solid red;
+  /* border: 2px solid red; */
 }
 .App-container .App .Meta input {
   font-family: inherit;
@@ -44,7 +44,7 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 0.6rem;
-  border: 2px solid black;
+  /* border: 2px solid black; */
 }
 .App-container .App #certificateWrapper {
   box-shadow: 0 0 5px #000;
